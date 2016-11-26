@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="nhw-todo">
   <template>
@@ -32,6 +33,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       paper-button {
         align-self: flex-end;
       }
+
+      paper-icon-button {
+        width: 30px;
+        height: 30px;
+        padding: 4px;
+      }
     </style>
 
     <div class="card">
@@ -42,7 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h2>To get done:</h2>
       <ul class="results">
         <template is="dom-repeat" items="{{ todos }}">
-          <li>{{ item }}</li>
+          <li>{{ item }}<paper-icon-button icon="close" on-tap="_remove"></paper-icon-button></li>
         </template>
       </ul>
     </div>
@@ -56,17 +63,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String
         },
         todos: {
-          type: Array
+          type: Array,
+          value: function () { return []; }
         }
       },
-      ready: function () {
-        this.todos = [];
-      },
-      _addTodo: function _addTodo () {
+      _addTodo: function _addTodo() {
         if (this.todo !== '') {
           this.push('todos', this.todo);
           this.todo = '';
         }
+      },
+      _remove: function _remove(item) {
+        var idx = this.todos.indexOf(item);
+        this.todos.splice(idx, 1);
       }
     });
   </script>
